@@ -19,7 +19,7 @@ jQuery.fn.reverse = function() {
 		 $.getJSON(url, function(data){
 			 $.each(data.reverse(), function(i, item) { 
 				if($("#msg-" + item.id).length == 0) { // <- fix for twitter caching which sometimes have problems with the "since" parameter
-				 	list.prepend('<li id="msg-' + item.id + '"><img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" /><span class="time" title="' + item.created_at + '">' + relative_time(item.created_at) + '</span> <a class="user" onclick="replyUpdate(' + item.id + ')" href="javascript:addAddress(\'' + item.user.screen_name + '\')">' + item.user.screen_name + '</a><div class="tweet_text">' + item.text.replace(/(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, '<a href="$1">$1</a>').replace(/[\@]+([A-Za-z0-9-_]+)/g, '<a href="http://twitter.com/$1">@$1</a>').replace(/[&lt;]+[3]/g, "<tt class='heart'>&#x2665;</tt>") + '</div></li>');
+				 	list.prepend('<li id="msg-' + item.id + '"><img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" /><span class="time" title="' + item.created_at + '">' + relative_time(item.created_at) + '</span> <a class="user" href="javascript:replyTo(\'' + item.user.screen_name + '\',' + item.id + ')">' + item.user.screen_name + '</a><div class="tweet_text">' + item.text.replace(/(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, '<a href="$1">$1</a>').replace(/[\@]+([A-Za-z0-9-_]+)/g, '<a href="http://twitter.com/$1">@$1</a>').replace(/[&lt;]+[3]/g, "<tt class='heart'>&#x2665;</tt>") + '</div></li>');
 
 					// Don't want Growl notifications? Comment out the following method call
 					fluid.showGrowlNotification({
@@ -68,7 +68,7 @@ function recalcTime() {
 			function() {
 				$(this).text(relative_time($(this).attr("title")));
 			}
-	)
+	);
 }
 
 
@@ -95,15 +95,11 @@ function refreshMessages() {
 	return;
 }
 
-function replyUpdate(status_id) {
+function replyTo(screen_name, status_id) {
+    $("#status").val($("#status").val() + ' @' + screen_name + ' ');
+	$("#status").focus();
     window.in_reply_to_status_id = status_id;
     return;
-}
-
-function addAddress(screen_name) {
-	$("#status").val($("#status").val() + ' @' + screen_name + ' ');
-	$("#status").focus();
-	return;
 }
 
 function setStatus(status_text) {
