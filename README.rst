@@ -43,6 +43,11 @@ Currently Twoot has two themes, "Default" and "HUD-black" to match the window st
 
 Bugs, praise, feature requests
 ------------------------------
+Hit me up with an email at eatsleepgolf at gmail dot com or twitter `@travisjeffery`_.
+
+.. _@travisjeffery: http://twitter.com/travisjeffery
+
+OR
 
 Create a comment on the `initial announcement page`_.
 
