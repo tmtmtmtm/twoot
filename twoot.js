@@ -42,22 +42,22 @@ function relative_time(time_value) {
 	time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
 	var parsed_date = Date.parse(time_value);
 	var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
-	var delta = parseInt((relative_to.getTime() - parsed_date) / 1000);
+	var delta = parseInt((relative_to.getTime() - parsed_date) / 1000, null);
 	delta = delta + (relative_to.getTimezoneOffset() * 60);
 	if (delta < 60) {
 		return '< a minute ago';
 	} else if(delta < 120) {
 		return 'a minute ago';
 	} else if(delta < (45*60)) {
-		return (parseInt(delta / 60)).toString() + ' minutes ago';
+		return (parseInt(delta / 60, null)).toString() + ' minutes ago';
 	} else if(delta < (90*60)) {
 		return 'an hour ago';
 	} else if(delta < (24*60*60)) {
-		return '' + (parseInt(delta / 3600)).toString() + ' hours ago';
+		return '' + (parseInt(delta / 3600, null)).toString() + ' hours ago';
 	} else if(delta < (48*60*60)) {
 		return '1 day ago';
 	} else {
-		return (parseInt(delta / 86400)).toString() + ' days ago';
+		return (parseInt(delta / 86400, null)).toString() + ' days ago';
 	}
 };
 
