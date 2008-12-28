@@ -37,6 +37,11 @@ body { font: 0.75em/1.5 'Lucida Grande', sans-serif; color: #eee; background-col
 img.profile_image {
 	display:none; /* Hide profile image */
 }
+
+a {
+    color:#42B6FC;
+}
+
 a.user {
 	color: #E12D8C;
 	text-decoration:none;
