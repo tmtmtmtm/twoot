@@ -8,8 +8,6 @@ Twoot is a customizable minimal twitter client for WebKit-based SSBs. It is base
 The code has only been tested with Fluid, but should work in Safari and other WebKit-based browsers (including the iPhone I guess).
 
 .. image:: http://data.tumblr.com/3jJyzeT8ji14p1qbUrBWaaUpo1_500.png
-.. image:: http://www.peterkrantz.com/wp-content/uploads/2008/08/screenshot.gif
-.. image:: http://www.peterkrantz.com/wp-content/uploads/2008/10/twoot-hud-black-avatars.jpg
 
 Installation
 ------------
