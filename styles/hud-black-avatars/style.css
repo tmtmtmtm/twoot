@@ -44,6 +44,9 @@ a.user {
 	color: #e1c927;
 	text-decoration:none;
 }
+a {
+    color:#42B6FC;
+}
 span.time {
 	color: #aaa;
 }
