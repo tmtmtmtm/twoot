@@ -83,3 +83,14 @@ input#status:focus, input#status:active, a:focus, a:active
 label {
 	display:block;
 }
+
+.favorite {
+    color:#CCC;
+    float:right;
+}
+
+.reply {
+    color:#CCC;
+    float:right;
+    margin-right:5px;
+}

@@ -19,7 +19,20 @@ jQuery.fn.reverse = function() {
 		 $.getJSON(url, function(data){
 			 $.each(data.reverse(), function(i, item) { 
 				if($("#msg-" + item.id).length == 0) { // <- fix for twitter caching which sometimes have problems with the "since" parameter
-				 	list.prepend('<li id="msg-' + item.id + '"><img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" /><span class="time" title="' + item.created_at + '"><a class="replyTo" href="javascript:replyTo(\'' + item.user.screen_name + '\',' + item.id + ')">' + relative_time(item.created_at) + '</a></span> <a class="user" href="http://twitter.com/' + item.user.screen_name + '">' + item.user.screen_name + '</a><div class="tweet_text">' + item.text.replace(/(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, '<a href="$1">$1</a>').replace(/[\@]+([A-Za-z0-9-_]+)/g, '<a href="http://twitter.com/$1">@$1</a>').replace(/[&lt;]+[3]/g, "<tt class='heart'>&#x2665;</tt>") + '</div></li>');
+				 	list.prepend('<li onMouseOver="javascript:insertReplyAndFavorite(' + item.id + ')" id="msg-' + item.id + '">' + 
+				 	'<img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" />' + 
+				 	'<span class="time" title="' + item.created_at + '">' + 
+				 	'<a class="visit_status" href="http://twitter.com/' + item.user.screen_name + '/status/' + item.id + '">' + relative_time(item.created_at) + '</a>' + 
+				 	'</span>' + 
+				 	' <a class="user" title="' + item.user.name + '" href="http://twitter.com/' + item.user.screen_name + '">' + item.user.screen_name + '</a>' + 
+				 	' <a class="favorite" title="favorite this update" href="javascript:toggleFavorite(' + item.id + ')">&#10029;</a>' + 
+				 	' <a class="reply" title="reply to ' + item.user.screen_name + '" href="javascript:replyTo(\'' + item.user.screen_name + '\', ' + item.id + ')">@</a>' + 
+				 	'<div class="tweet_text">' + item.text.replace(/(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, '<a href="$1">$1</a>').replace(/[\@]+([A-Za-z0-9-_]+)/g, '<a href="http://twitter.com/$1">@$1</a>').replace(/[&lt;]+[3]/g, "<tt class='heart'>&#x2665;</tt>") + '</div>' + 
+				 	'</li>');
+				 	
+				 	if (item.favorited) {
+                        $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
+                      }
 
 					// Don't want Growl notifications? Comment out the following method call
 					fluid.showGrowlNotification({
@@ -36,6 +49,9 @@ jQuery.fn.reverse = function() {
  };
 })(jQuery);
 
+function insertReplyAndFavorite(id) {
+    $('#msg-' + id).prepend()
+}
 
 function relative_time(time_value) {
 	var values = time_value.split(" ");
@@ -64,7 +80,7 @@ function relative_time(time_value) {
 
 //get all span.time and recalc from title attribute
 function recalcTime() {
-	$('a.replyTo').each(function(index) {
+	$('a.visit_status').each(function(index) {
 		$(this).text(relative_time($(this).parents("span.time").attr("title")));
 	});
 }
@@ -127,15 +143,31 @@ function updateStatusCount() {
 function checkStatus () {
     var origColor = $('#status').css("background-color");
     if ($('#status').val().length == 140) {
-	    $("#status").val("Twoosh!").css("background-color","#52FF55").fadeOut('slow', function() {
+	    $("#status").val("Twoosh!").css("background-color","#CF6").fadeOut('slow', function() {
 	      $("#status").val("").css("background-color", origColor).fadeIn('slow');
 	    });
     } else {
-        $('#status').val($("#status").val()).css("background-color","#52FF55").fadeOut('slow', function() {
+        $('#status').val($("#status").val()).css("background-color","#CF6").fadeOut('slow', function() {
             $('#status').val("").css("background-color", origColor).fadeIn('slow');
         });
     }
 }
+
+function toggleFavorite(id) {
+  $.getJSON("http://twitter.com/statuses/show/" + id + ".json", 
+    function(data){
+      if (data.favorited) {
+        $.post('http://twitter.com/favorites/destroy/' + id + '.json');
+        $('#msg-' + id + ' a.favorite').css('color', '#CCC');
+      }
+      else {
+        $.post('http://twitter.com/favorites/create/' + id + '.json');
+        $('#msg-' + id + ' a.favorite').css('color', '#FF0');
+      }
+    }
+  );
+}
+
 
 // set up basic stuff for first load
 $(document).ready(function(){

@@ -51,4 +51,10 @@ Create a comment on the `initial announcement page`_.
 
 .. _initial announcement page: http://www.peterkrantz.com/2008/twitter-client-with-fluid-and-jquery/
 
+Thanks
+------
 
+Thanks to `Dr. Drang`_ and of course `Peter Krantz`_ for the original code and idea.
+
+.. _Dr. Drang: http://twitter.com/drdrang
+.. _Peter Krantz: http://www.peterkrantz.com/
