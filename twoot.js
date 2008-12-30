@@ -19,7 +19,7 @@ jQuery.fn.reverse = function() {
 		 $.getJSON(url, function(data){
 			 $.each(data.reverse(), function(i, item) { 
 				if($("#msg-" + item.id).length == 0) { // <- fix for twitter caching which sometimes have problems with the "since" parameter
-				 	list.prepend('<li onMouseOver="javascript:insertReplyAndFavorite(' + item.id + ')" id="msg-' + item.id + '">' + 
+				 	list.prepend('<li id="msg-' + item.id + '">' + 
 				 	'<img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" />' + 
 				 	'<span class="time" title="' + item.created_at + '">' + 
 				 	'<a class="visit_status" href="http://twitter.com/' + item.user.screen_name + '/status/' + item.id + '">' + relative_time(item.created_at) + '</a>' + 
@@ -48,10 +48,6 @@ jQuery.fn.reverse = function() {
 		 });
  };
 })(jQuery);
-
-function insertReplyAndFavorite(id) {
-    $('#msg-' + id).prepend()
-}
 
 function relative_time(time_value) {
 	var values = time_value.split(" ");
