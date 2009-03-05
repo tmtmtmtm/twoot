@@ -90,10 +90,16 @@ label {
 .favorite {
     color:#CCC;
     float:right;
+    margin-right:5px;
 }
 
 .reply {
     color:#CCC;
     float:right;
     margin-right:5px;
+}
+
+.retweet {
+    color:#CCC;
+    float:right;
 }
