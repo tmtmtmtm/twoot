@@ -98,7 +98,7 @@ function showAlert(message) {
 }
 
 function reTweet(username, text) {
-    $('#status').val($("#status").val() + " ♺ @" + username + ": \"" + text + "\"");
+    $('#status').val($("#status").val() + " RT @" + username + ": \"" + text + "\"");
     $('#status').focus();
     updateStatusCount();
     return;
