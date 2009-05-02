@@ -68,10 +68,8 @@ function twitterDate_to_jsDate(datestr) {
 }
 
 function relative_time(time_value) {
-    var parsed_date = twitterDate_to_jsDate(time_value);
-    var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
-    var delta = parseInt((relative_to.getTime() - parsed_date) / 1000, null);
-    delta = delta + (relative_to.getTimezoneOffset() * 60);
+    var now = new Date();
+    var delta = (now.getTime() - twitterDate_to_jsDate(time_value)) / 1000 + (60 * now.getTimezoneOffset());
     if (delta < 60) return 'less than a minute ago';
     if (delta < 120) return 'a minute ago';
     if (delta < (45*60)) return (parseInt(delta / 60, null)).toString() + ' minutes ago';
@@ -81,7 +79,6 @@ function relative_time(time_value) {
     if (delta < (48*60*60)) return '1 day ago';
     return (parseInt(delta / 86400, null)).toString() + ' days ago';
 };
-
 
 //get all span.time and recalc from title attribute
 function recalcTime() {
