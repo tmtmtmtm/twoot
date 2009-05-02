@@ -4,7 +4,7 @@
 * */
 
 // Don't want Growl notifications? Change this to 0
-var GROWL = 1;
+var MAX_GROWLS = 3;
 
 var LAST_UPDATE;
 
@@ -16,6 +16,7 @@ jQuery.fn.reverse = function() {
 
 (function($) {
     $.fn.gettweets = function(o){
+        var growled = 0;
         return this.each(function(){
             var list = $('ul.tweet_list').prependTo(this);
             var url = 'http://twitter.com/statuses/friends_timeline.json?count=200' + getSinceParameter();
@@ -39,7 +40,7 @@ jQuery.fn.reverse = function() {
                         $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
                     }
 
-                  if (GROWL) { 
+                  if (growled++ < MAX_GROWLS) { 
                     fluid.showGrowlNotification({
                         title: item.user.name + " @" + item.user.screen_name,
                         description: item.text,
