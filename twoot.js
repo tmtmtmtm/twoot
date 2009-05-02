@@ -125,11 +125,16 @@ function replyTo(screen_name, status_id) {
 }
 
 function setStatus(status_text) {
-  if (window.in_reply_to_status_id) {
-    $.post("http://twitter.com/statuses/update.json", { status: status_text, in_reply_to_status_id: window.in_reply_to_status_id, source: "twoot" }, function(data) { checkStatus(); refreshStatusField(); }, "json" );
-  } else {
-    $.post("http://twitter.com/statuses/update.json", { status: status_text, source: "twoot" }, function(data) { checkStatus(); refreshStatusField(); }, "json" );
+  var postVars = {
+    status: status_text,
+    source: "twoot",
   };
+  if (window.in_reply_to_status_id) { 
+    postVars.in_reply_to_status_id = window.in_reply_to_status_id;
+  }
+  $.post("http://twitter.com/statuses/update.json", postVars, function(data) { 
+    checkStatus(); refreshStatusField(); 
+  }, "json" );
   window.in_reply_to_status_id = null;
   return;
 }
