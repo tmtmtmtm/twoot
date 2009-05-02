@@ -6,6 +6,9 @@
 // Don't want Growl notifications? Change this to 0
 var MAX_GROWLS = 3;
 
+// How often (in seconds) to refresh.
+var REFRESH_TIME = 90;
+
 var LAST_UPDATE;
 
 //Reverse a collection
@@ -179,8 +182,8 @@ $(document).ready(function(){
     setStatus($("#status").val());
     return false;
   });
-  window.setInterval("refreshMessages()", 65000);
-  window.setInterval("recalcTime()", 60000);
+  window.setInterval(refreshMessages, 1000 * REFRESH_TIME);
+  window.setInterval(recalcTime,      1000 * 60);
 
   //Bind r key to request new messages
   $(document).bind('keydown', {combi:'r', disableInInput: true}, refreshMessages);
