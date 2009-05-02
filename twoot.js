@@ -15,45 +15,45 @@ jQuery.fn.reverse = function() {
 
 
 (function($) {
-    $.fn.gettweets = function(o){
-        var growled = 0;
-        return this.each(function(){
-            var list = $('ul.tweet_list').prependTo(this);
-            var url = 'http://twitter.com/statuses/friends_timeline.json?count=200' + getSinceParameter();
+  $.fn.gettweets = function(o){
+    var growled = 0;
+    return this.each(function(){
+      var list = $('ul.tweet_list').prependTo(this);
+      var url = 'http://twitter.com/statuses/friends_timeline.json?count=200' + getSinceParameter();
 
-            $.getJSON(url, function(data){
-                $.each(data.reverse(), function(i, item) { 
-                    if($("#msg-" + item.id).length == 0) { // <- fix for twitter caching which sometimes have problems with the "since" parameter
-                    list.prepend('<li id="msg-' + item.id + '">' + 
-                    '<img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" />' + 
-                    '<span class="time" title="' + item.created_at + '">' + 
-                    '<a class="visit_status" href="http://twitter.com/' + item.user.screen_name + '/status/' + item.id + '">' + relative_time(item.created_at) + '</a>' + 
-                    '</span>' + 
-                    ' <a class="user" title="' + item.user.name + '" href="http://twitter.com/' + item.user.screen_name + '">' + item.user.screen_name + '</a>' + 
-                    ' <a class="retweet" title="retweet this update" href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' + item.text + '\')">&#x267A;</a>' + 
-                    ' <a class="favorite" title="favorite this update" href="javascript:toggleFavorite(' + item.id + ')">&#10029;</a>' + 
-                    ' <a class="reply" title="reply to ' + item.user.screen_name + '" href="javascript:replyTo(\'' + item.user.screen_name + '\', ' + item.id + ')">@</a>' + 
-                    '<div class="tweet_text">' + item.text.replace(/(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, '<a href="$1">$1</a>').replace(/[\@]+([A-Za-z0-9-_]+)/g, '<a href="http://twitter.com/$1">@$1</a>').replace(/[&lt;]+[3]/g, "<tt class='heart'>&#x2665;</tt>") + '</div>' + 
-                    '</li>');
+      $.getJSON(url, function(data){
+        $.each(data.reverse(), function(i, item) { 
+          if($("#msg-" + item.id).length == 0) { // <- fix for twitter caching which sometimes have problems with the "since" parameter
+            list.prepend('<li id="msg-' + item.id + '">' + 
+              '<img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" />' + 
+              '<span class="time" title="' + item.created_at + '">' + 
+                '<a class="visit_status" href="http://twitter.com/' + item.user.screen_name + '/status/' + item.id + '">' + relative_time(item.created_at) + '</a>' + 
+              '</span>' + 
+              ' <a class="user" title="' + item.user.name + '" href="http://twitter.com/' + item.user.screen_name + '">' + item.user.screen_name + '</a>' + 
+              ' <a class="retweet" title="retweet this update" href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' + item.text + '\')">&#x267A;</a>' + 
+              ' <a class="favorite" title="favorite this update" href="javascript:toggleFavorite(' + item.id + ')">&#10029;</a>' + 
+              ' <a class="reply" title="reply to ' + item.user.screen_name + '" href="javascript:replyTo(\'' + item.user.screen_name + '\', ' + item.id + ')">@</a>' + 
+              '<div class="tweet_text">' + item.text.replace(/(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, '<a href="$1">$1</a>').replace(/[\@]+([A-Za-z0-9-_]+)/g, '<a href="http://twitter.com/$1">@$1</a>').replace(/[&lt;]+[3]/g, "<tt class='heart'>&#x2665;</tt>") + '</div>' + 
+            '</li>');
 
-                    if (item.favorited) {
-                        $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
-                    }
+            if (item.favorited) {
+              $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
+            }
 
-                  if (growled++ < MAX_GROWLS) { 
-                    fluid.showGrowlNotification({
-                        title: item.user.name + " @" + item.user.screen_name,
-                        description: item.text,
-                        priority: 2,
-                        icon: item.user.profile_image_url
-                    });
-                  };
+            if (growled++ < MAX_GROWLS) { 
+              fluid.showGrowlNotification({
+                title: item.user.name + " @" + item.user.screen_name,
+                description: item.text,
+                priority: 2,
+                icon: item.user.profile_image_url
+              });
+            };
 
-                }
-            });
+          }
         });
+      });
     });
-};
+  };
 })(jQuery);
 
 function relative_time(time_value) {
