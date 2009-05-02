@@ -1,7 +1,3 @@
-/*
-* The Twitter request code is based on the jquery tweet extension by http://tweet.seaofclouds.com/
-*
-* */
 
 // Don't want Growl notifications? Change this to 0
 var MAX_GROWLS = 3;
@@ -25,7 +21,7 @@ jQuery.fn.reverse = function() {
 
       $.getJSON(url, function(data){
         $.each(data.reverse(), function(i, item) { 
-          // <- fix for twitter caching which sometimes have problems with the "since" parameter
+          // only if we don't already have this 
           if($("#msg-" + item.id).length == 0) { 
 
             list.prepend(tweet_as_HTML(item));
@@ -52,35 +48,57 @@ jQuery.fn.reverse = function() {
 
 function tweet_as_HTML(item) { 
   return('<li id="msg-' + item.id + '">' + 
-    '<img class="profile_image" src="' + item.user.profile_image_url + '" alt="' + item.user.name + '" />' + 
+    '<img class="profile_image" src="' + item.user.profile_image_url + 
+      '" alt="' + item.user.name + '" />' + 
     '<span class="time" title="' + item.created_at + '">' + 
-      '<a class="visit_status" href="http://twitter.com/' + item.user.screen_name + '/status/' + item.id + '">' + relative_time(item.created_at) + '</a>' + 
+      '<a class="visit_status" href="http://twitter.com/' + 
+        item.user.screen_name + '/status/' + item.id + '">' + 
+        relative_time(item.created_at) + 
+      '</a>' + 
     '</span>' + 
-    ' <a class="user" title="' + item.user.name + '" href="http://twitter.com/' + item.user.screen_name + '">' + item.user.screen_name + '</a>' + 
-    ' <a class="retweet" title="retweet this update" href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' + item.text + '\')">&#x267A;</a>' + 
-    ' <a class="favorite" title="favorite this update" href="javascript:toggleFavorite(' + item.id + ')">&#10029;</a>' + 
-    ' <a class="reply" title="reply to ' + item.user.screen_name + '" href="javascript:replyTo(\'' + item.user.screen_name + '\', ' + item.id + ')">@</a>' + 
-    '<div class="tweet_text">' + item.text.replace(/(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, '<a href="$1">$1</a>').replace(/[\@]+([A-Za-z0-9-_]+)/g, '<a href="http://twitter.com/$1">@$1</a>').replace(/[&lt;]+[3]/g, "<tt class='heart'>&#x2665;</tt>") + '</div>' + 
+    ' <a class="user" title="' + item.user.name + '" href="http://twitter.com/' +
+      item.user.screen_name + '">' + item.user.screen_name + '</a>' + 
+    ' <a class="retweet" title="retweet this update"' + 
+      ' href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' + 
+      item.text + '\')">&#x267A;</a>' + 
+    ' <a class="favorite" title="favorite this update"' + 
+      ' href="javascript:toggleFavorite(' + item.id + ')">&#10029;</a>' + 
+    ' <a class="reply" title="reply to ' + item.user.screen_name +
+      '" href="javascript:replyTo(\'' + item.user.screen_name + '\', ' + 
+      item.id + ')">@</a>' + 
+    '<div class="tweet_text">' + 
+      item.text.replace(
+        /(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, 
+        '<a href="$1">$1</a>'
+      ).replace(
+        /[\@]+([A-Za-z0-9-_]+)/g, 
+        '<a href="http://twitter.com/$1">@$1</a>'
+      ).replace(
+        /[&lt;]+[3]/g, 
+        "<tt class='heart'>&#x2665;</tt>"
+      ) + 
+    '</div>' + 
   '</li>');
 }
 
 function twitterDate_to_jsDate(datestr) { 
-    var values = datestr.split(" ");
-    time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
-    return Date.parse(time_value);
+  var values = datestr.split(" ");
+  time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
+  return Date.parse(time_value);
 }
 
 function relative_time(time_value) {
-    var now = new Date();
-    var delta = (now.getTime() - twitterDate_to_jsDate(time_value)) / 1000 + (60 * now.getTimezoneOffset());
-    if (delta < 60) return 'less than a minute ago';
-    if (delta < 120) return 'a minute ago';
-    if (delta < (45*60)) return (delta / 60 | 0) + ' minutes ago';
-    if (delta < (90*60)) return 'an hour ago';
-    if (delta < (2*60*60)) return 'two hours ago';
-    if (delta < (24*60*60)) return '' + (delta / 3600 | 0) + ' hours ago';
-    if (delta < (48*60*60)) return '1 day ago';
-    return (delta / 86400 | 0) + ' days ago';
+  var now = new Date();
+  var delta = (now.getTime() - twitterDate_to_jsDate(time_value)) / 1000 + 
+    (60 * now.getTimezoneOffset());
+  if (delta <     1*60) return 'less than a minute ago';
+  if (delta <     2*60) return 'a minute ago';
+  if (delta <    45*60) return (delta / 60 | 0) + ' minutes ago';
+  if (delta <    90*60) return 'an hour ago';
+  if (delta <  2*60*60) return 'two hours ago';
+  if (delta < 24*60*60) return '' + (delta / 3600 | 0) + ' hours ago';
+  if (delta < 48*60*60) return '1 day ago';
+  return (delta / 86400 | 0) + ' days ago';
 }
 
 //get all span.time and recalc from title attribute
@@ -89,7 +107,6 @@ function recalcTime() {
     $(this).text(relative_time($(this).parents("span.time").attr("title")));
   });
 }
-
 
 function getSinceParameter() {
   if(LAST_UPDATE == null) return "";
@@ -103,7 +120,7 @@ function showAlert(message) {
 }
 
 function reTweet(username, text) {
-  $('#status').val($("#status").val() + " RT @" + username + ": \"" + text + "\"");
+  $('#status').val($("#status").val() + ' RT @' + username + ': "' + text + '"');
   $('#status').focus();
   updateStatusCount();
   return;
@@ -133,17 +150,9 @@ function setStatus(status_text) {
     postVars.in_reply_to_status_id = window.in_reply_to_status_id;
   }
   $.post("http://twitter.com/statuses/update.json", postVars, function(data) { 
-    checkStatus(); refreshStatusField(); 
+    clearStatusField();
   }, "json" );
   window.in_reply_to_status_id = null;
-  return;
-}
-
-function refreshStatusField() {
-  //maybe show some text below field with last message sent?
-  refreshMessages();
-  $("#status_count").text("140");
-  $('html').animate({scrollTop:0}, 'fast'); 
   return;
 }
 
@@ -153,17 +162,18 @@ function updateStatusCount() {
   return;
 }
 
-function checkStatus () {
+function clearStatusField() {
+  alert("About to clearStatus");
   var origColor = $('#status').css("background-color");
-  if ($('#status').val().length == 140) {
-    $("#status").val("Twoosh!").css("background-color","#CF6").fadeOut('slow', function() {
-      $("#status").val("").css("background-color", origColor).fadeIn('slow');
-    });
-  } else {
-    $('#status').val($("#status").val()).css("background-color","#CF6").fadeOut('slow', function() {
-      $('#status').val("").css("background-color", origColor).fadeIn('slow');
-    });
-  }
+  $('#status').val($("#status").val()).css("background-color","#CF6").fadeOut('slow', function() {
+    $('#status').val("").css("background-color", origColor).fadeIn('slow');
+  });
+  //maybe show some text below field with last message sent?
+  alert("Now refreshing");
+  refreshMessages();
+  updateStatusCount();
+  $('html').animate({scrollTop:0}, 'fast'); 
+  return;
 }
 
 function toggleFavorite(id) {
