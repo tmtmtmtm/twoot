@@ -6,6 +6,7 @@ var MAX_GROWLS = 3;
 var REFRESH_TIME = 90;
 
 var LATEST_SEEN = 0;
+var SERVER = 'http://twitter.com/';
 
 //Reverse a collection
 jQuery.fn.reverse = function() {
@@ -17,9 +18,8 @@ jQuery.fn.reverse = function() {
     var growled = 0;
     return this.each(function(){
       var list = $('ul.tweet_list').prependTo(this);
-      var url = 'http://twitter.com' + 
-        '/statuses/friends_timeline.json?' + 
-        (LATEST_SEEN ? 'since_id=' + LATEST_SEEN : 'count=200');
+      var url = URL_LATEST() +
+        (LATEST_SEEN ? '?since_id=' + LATEST_SEEN : '?count=200');
 
       $.getJSON(url, function(data){
         $.each(data.reverse(), function(i, item) {
@@ -55,12 +55,12 @@ function tweet_as_HTML(item) {
     '<img class="profile_image" src="' + item.user.profile_image_url +
       '" alt="' + item.user.name + '" />' +
     '<span class="time" title="' + item.created_at + '">' +
-      '<a class="visit_status" href="http://twitter.com/' +
+      '<a class="visit_status" href="' + SERVER +
         item.user.screen_name + '/status/' + item.id + '">' +
         relative_time(item.created_at) +
       '</a>' +
     '</span>' +
-    ' <a class="user" title="' + item.user.name + '" href="http://twitter.com/' +
+    ' <a class="user" title="' + item.user.name + '" href="' + SERVER +
       item.user.screen_name + '">' + item.user.screen_name + '</a>' +
     ' <a class="retweet" title="retweet this update"' +
       ' href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' +
@@ -76,7 +76,7 @@ function tweet_as_HTML(item) {
         '<a href="$1">$1</a>'
       ).replace(
         /[\@]+([A-Za-z0-9-_]+)/g,
-        '<a href="http://twitter.com/$1">@$1</a>'
+        '<a href="' + SERVER + '$1">@$1</a>'
       ).replace(
         /[&lt;]+[3]/g,
         "<tt class='heart'>&#x2665;</tt>"
@@ -147,7 +147,7 @@ function setStatus(status_text) {
   if (window.in_reply_to_status_id) {
     postVars.in_reply_to_status_id = window.in_reply_to_status_id;
   }
-  $.post("http://twitter.com/statuses/update.json", postVars, function(data) {
+  $.post(URL_UPDATE(), postVars, function(data) {
     clearStatusField();
   }, "json" );
   window.in_reply_to_status_id = null;
@@ -161,13 +161,11 @@ function updateStatusCount() {
 }
 
 function clearStatusField() {
-  alert("About to clearStatus");
   var origColor = $('#status').css("background-color");
   $('#status').val($("#status").val()).css("background-color","#CF6").fadeOut('slow', function() {
     $('#status').val("").css("background-color", origColor).fadeIn('slow');
   });
   //maybe show some text below field with last message sent?
-  alert("Now refreshing");
   refreshMessages();
   updateStatusCount();
   $('html').animate({scrollTop:0}, 'fast');
@@ -175,18 +173,22 @@ function clearStatusField() {
 }
 
 function toggleFavorite(id) {
-  $.getJSON("http://twitter.com/statuses/show/" + id + ".json",
-    function(data){
-      if (data.favorited) {
-        $.post('http://twitter.com/favorites/destroy/' + id + '.json');
-        $('#msg-' + id + ' a.favorite').css('color', '#CCC');
-      } else {
-        $.post('http://twitter.com/favorites/create/' + id + '.json');
-        $('#msg-' + id + ' a.favorite').css('color', '#FF0');
-      }
+  $.getJSON(URL_SHOW(id), function(data) {
+    if (data.favorited) {
+      $.post(URL_FAVE_DEL(id));
+      $('#msg-' + id + ' a.favorite').css('color', '#CCC');
+    } else {
+      $.post(URL_FAVE_ADD(id));
+      $('#msg-' + id + ' a.favorite').css('color', '#FF0');
     }
-  );
+  });
 }
+
+function URL_UPDATE()     { return SERVER + 'statuses/update.json'; }
+function URL_LATEST()     { return SERVER + 'statuses/friends_timeline.json'; }
+function URL_SHOW(id)     { return SERVER + 'statuses/show/'+id+'.json'; }
+function URL_FAVE_ADD(id) { return SERVER + 'favorites/create/'+id+'.json'; }
+function URL_FAVE_DEL(id) { return SERVER + 'favorites/destroy/'+id+'.json'; }
 
 // set up basic stuff for first load
 $(document).ready(function(){
@@ -204,4 +206,5 @@ $(document).ready(function(){
     disableInInput: true
   }, refreshMessages);
 });
+
 
