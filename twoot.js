@@ -41,7 +41,7 @@ jQuery.fn.reverse = function() {
                 priority: 2,
                 icon: item.user.profile_image_url
               });
-            };
+            }
 
           }
         });
@@ -81,7 +81,7 @@ function relative_time(time_value) {
     if (delta < (24*60*60)) return '' + (delta / 3600 | 0) + ' hours ago';
     if (delta < (48*60*60)) return '1 day ago';
     return (delta / 86400 | 0) + ' days ago';
-};
+}
 
 //get all span.time and recalc from title attribute
 function recalcTime() {
@@ -127,7 +127,7 @@ function replyTo(screen_name, status_id) {
 function setStatus(status_text) {
   var postVars = {
     status: status_text,
-    source: "twoot",
+    source: "twoot"
   };
   if (window.in_reply_to_status_id) { 
     postVars.in_reply_to_status_id = window.in_reply_to_status_id;
