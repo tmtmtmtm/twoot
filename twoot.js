@@ -14,7 +14,7 @@ jQuery.fn.reverse = function() {
     $.fn.gettweets = function(o){
         return this.each(function(){
             var list = $('ul.tweet_list').prependTo(this);
-            var url = 'http://twitter.com/statuses/friends_timeline.json' + getSinceParameter();
+            var url = 'http://twitter.com/statuses/friends_timeline.json?count=200' + getSinceParameter();
 
             $.getJSON(url, function(data){
                 $.each(data.reverse(), function(i, item) { 
@@ -60,8 +60,8 @@ function relative_time(time_value) {
     if (delta < 60) return 'less than a minute ago';
     if (delta < 120) return 'a minute ago';
     if (delta < (45*60)) return (parseInt(delta / 60, null)).toString() + ' minutes ago';
-    if (delta < (90*60)) return 'less than an hour ago';
-    if (delta < (120*60)) return 'an hour ago';
+    if (delta < (90*60)) return 'an hour ago';
+    if (delta < (2*60*60)) return 'two hours ago';
     if (delta < (24*60*60)) return '' + (parseInt(delta / 3600, null)).toString() + ' hours ago';
     if (delta < (48*60*60)) return '1 day ago';
     return (parseInt(delta / 86400, null)).toString() + ' days ago';
@@ -80,7 +80,7 @@ function getSinceParameter() {
     if(LAST_UPDATE == null) {
         return "";
     } else {
-        return "?since=" + LAST_UPDATE;
+        return ";since=" + LAST_UPDATE;
     }
 }
 
