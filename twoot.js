@@ -5,7 +5,7 @@ var MAX_GROWLS = 3;
 // How often (in seconds) to refresh.
 var REFRESH_TIME = 90;
 
-var LAST_UPDATE;
+var LATEST_SEEN = 0;
 
 //Reverse a collection
 jQuery.fn.reverse = function() {
@@ -17,7 +17,9 @@ jQuery.fn.reverse = function() {
     var growled = 0;
     return this.each(function(){
       var list = $('ul.tweet_list').prependTo(this);
-      var url = 'http://twitter.com/statuses/friends_timeline.json?count=200' + getSinceParameter();
+      var url = 'http://twitter.com' + 
+        '/statuses/friends_timeline.json?' + 
+        (LATEST_SEEN ? 'since_id=' + LATEST_SEEN : 'count=200');
 
       $.getJSON(url, function(data){
         $.each(data.reverse(), function(i, item) {
@@ -29,6 +31,8 @@ jQuery.fn.reverse = function() {
             if (item.favorited) {
               $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
             }
+  
+            if (item.id > LATEST_SEEN) LATEST_SEEN = item.id;
 
             if (growled++ < MAX_GROWLS) {
               fluid.showGrowlNotification({
@@ -108,11 +112,6 @@ function recalcTime() {
   });
 }
 
-function getSinceParameter() {
-  if(LAST_UPDATE == null) return "";
-  return ";since=" + LAST_UPDATE;
-}
-
 function showAlert(message) {
   $("#alert p").text(message);
   $("#alert").fadeIn("fast");
@@ -129,7 +128,6 @@ function reTweet(username, text) {
 function refreshMessages() {
   showAlert("Getting new tweets...");
   $(".tweets").gettweets();
-  LAST_UPDATE = new Date().toGMTString();	
   $("#alert").fadeOut(2000);
   return;
 }
@@ -206,3 +204,4 @@ $(document).ready(function(){
     disableInInput: true
   }, refreshMessages);
 });
+
