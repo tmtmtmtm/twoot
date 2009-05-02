@@ -96,3 +96,7 @@ label {
     float:right;
     margin-right:5px;
 }
+
+tt.heart { 
+  color:#f00;
+}
