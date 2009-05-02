@@ -55,13 +55,12 @@ function tweet_as_HTML(item) {
     '<img class="profile_image" src="' + item.user.profile_image_url +
       '" alt="' + item.user.name + '" />' +
     '<span class="time" title="' + item.created_at + '">' +
-      '<a class="visit_status" href="' + SERVER +
-        item.user.screen_name + '/status/' + item.id + '">' +
+      '<a class="visit_status" href="' + URL_VISIT(item) + '">' +
         relative_time(item.created_at) +
       '</a>' +
     '</span>' +
-    ' <a class="user" title="' + item.user.name + '" href="' + SERVER +
-      item.user.screen_name + '">' + item.user.screen_name + '</a>' +
+    ' <a class="user" title="' + item.user.name + '" href="' +
+      URL_USER(item.user) + '">' + item.user.screen_name + '</a>' +
     ' <a class="retweet" title="retweet this update"' +
       ' href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' +
       item.text + '\')">&#x267A;</a>' +
@@ -184,11 +183,13 @@ function toggleFavorite(id) {
   });
 }
 
-function URL_UPDATE()     { return SERVER + 'statuses/update.json'; }
-function URL_LATEST()     { return SERVER + 'statuses/friends_timeline.json'; }
-function URL_SHOW(id)     { return SERVER + 'statuses/show/'+id+'.json'; }
-function URL_FAVE_ADD(id) { return SERVER + 'favorites/create/'+id+'.json'; }
-function URL_FAVE_DEL(id) { return SERVER + 'favorites/destroy/'+id+'.json'; }
+function URL_UPDATE()     { return SERVER+'statuses/update.json'             }
+function URL_LATEST()     { return SERVER+'statuses/friends_timeline.json'   }
+function URL_SHOW(id)     { return SERVER+'statuses/show/'+id+'.json'        }
+function URL_FAVE_ADD(id) { return SERVER+'favorites/create/'+id+'.json'     }
+function URL_FAVE_DEL(id) { return SERVER+'favorites/destroy/'+id+'.json'    }
+function URL_VISIT(i)     { return SERVER+i.user.screen_name+'/status/'+i.id }
+function URL_USER(u)      { return SERVER+u.screen_name                      }
 
 // set up basic stuff for first load
 $(document).ready(function(){
