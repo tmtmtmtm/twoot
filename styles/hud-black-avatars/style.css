@@ -1,7 +1,22 @@
-* { margin: 0; padding: 0; }
-a { text-decoration: none; color: blue; }
-a:hover { text-decoration: underline; }
-body { font: 0.75em/1.5 'Lucida Grande', sans-serif; color: #eee; background-color:#323232 }
+* { 
+  margin: 0; 
+  padding: 0; 
+}
+
+a { 
+  text-decoration: none; 
+  color: blue; 
+}
+
+a:hover { 
+  text-decoration: underline; 
+}
+
+body { 
+  font: 0.75em/1.5 'Lucida Grande', sans-serif; 
+  color: #eee; 
+  background-color:#323232 
+}
 
 /* Alert message */
 #alert {
@@ -30,28 +45,35 @@ body { font: 0.75em/1.5 'Lucida Grande', sans-serif; color: #eee; background-col
 	min-height: 52px; /* To make sure short messages don't cut off profile image */
 	word-wrap: break-word; 
 }
+
 .tweet_list li:nth-child(odd) {
 	background-color: #1f1f1f;
 }
+
 .tweet_text a {
 	color: #ff3;
 }
+
 img.profile_image {
 	float:left;
 	margin: 3px auto 2px -50px; /* Negative margin places the profile image in the space created by the padding in .tweet_list li */
   height:48px;
   width: 48px; 
 }
+
 a.user {
 	color: #e1c927;
 	text-decoration:none;
 }
+
 a {
-    color:#42B6FC;
+  color:#42B6FC;
 }
+
 span.time {
 	color: #aaa;
 }
+
 #message_entry {
 	background-image: url(bg_messagearea.png);
 	background-repeat: repeat-x;
@@ -63,23 +85,26 @@ span.time {
 	z-index: 10;
 	width:100%;
 }
+
 form {
 	margin: 0.4em 0.5em;
-}	
+}
+
 input#status {
 	width: 99%;
 	margin-right:auto;
 	margin-left:auto;
 }
+
 input#send {
 	position:absolute;
 	left: -999px;
 	top: -999px;
 }
-input#status:focus, input#status:active, a:focus, a:active
-{
+
+input#status:focus, input#status:active, a:focus, a:active {
 	color:#000;
-    background-color:#ffa;
+  background-color:#ffa;
 }
 
 label {
@@ -87,14 +112,14 @@ label {
 }
 
 .favorite {
-    color:#CCC;
-    float:right;
+  color:#CCC;
+  float:right;
 }
 
 .reply {
-    color:#CCC;
-    float:right;
-    margin-right:5px;
+  color:#CCC;
+  float:right;
+  margin-right:5px;
 }
 
 tt.heart { 
