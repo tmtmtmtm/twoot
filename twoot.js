@@ -72,12 +72,12 @@ function relative_time(time_value) {
     var delta = (now.getTime() - twitterDate_to_jsDate(time_value)) / 1000 + (60 * now.getTimezoneOffset());
     if (delta < 60) return 'less than a minute ago';
     if (delta < 120) return 'a minute ago';
-    if (delta < (45*60)) return (parseInt(delta / 60, null)).toString() + ' minutes ago';
+    if (delta < (45*60)) return (delta / 60 | 0) + ' minutes ago';
     if (delta < (90*60)) return 'an hour ago';
     if (delta < (2*60*60)) return 'two hours ago';
-    if (delta < (24*60*60)) return '' + (parseInt(delta / 3600, null)).toString() + ' hours ago';
+    if (delta < (24*60*60)) return '' + (delta / 3600 | 0) + ' hours ago';
     if (delta < (48*60*60)) return '1 day ago';
-    return (parseInt(delta / 86400, null)).toString() + ' days ago';
+    return (delta / 86400 | 0) + ' days ago';
 };
 
 //get all span.time and recalc from title attribute
