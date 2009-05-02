@@ -10,7 +10,7 @@ var LAST_UPDATE;
 //Reverse a collection
 jQuery.fn.reverse = function() {
     return this.pushStack(this.get().reverse(), arguments);
-}; 
+};
 
 (function($) {
   $.fn.gettweets = function(o){
@@ -20,9 +20,9 @@ jQuery.fn.reverse = function() {
       var url = 'http://twitter.com/statuses/friends_timeline.json?count=200' + getSinceParameter();
 
       $.getJSON(url, function(data){
-        $.each(data.reverse(), function(i, item) { 
-          // only if we don't already have this 
-          if($("#msg-" + item.id).length == 0) { 
+        $.each(data.reverse(), function(i, item) {
+          // only if we don't already have this
+          if($("#msg-" + item.id).length == 0) {
 
             list.prepend(tweet_as_HTML(item));
 
@@ -30,7 +30,7 @@ jQuery.fn.reverse = function() {
               $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
             }
 
-            if (growled++ < MAX_GROWLS) { 
+            if (growled++ < MAX_GROWLS) {
               fluid.showGrowlNotification({
                 title: item.user.name + " @" + item.user.screen_name,
                 description: item.text,
@@ -46,42 +46,42 @@ jQuery.fn.reverse = function() {
   };
 })(jQuery);
 
-function tweet_as_HTML(item) { 
-  return('<li id="msg-' + item.id + '">' + 
-    '<img class="profile_image" src="' + item.user.profile_image_url + 
-      '" alt="' + item.user.name + '" />' + 
-    '<span class="time" title="' + item.created_at + '">' + 
-      '<a class="visit_status" href="http://twitter.com/' + 
-        item.user.screen_name + '/status/' + item.id + '">' + 
-        relative_time(item.created_at) + 
-      '</a>' + 
-    '</span>' + 
+function tweet_as_HTML(item) {
+  return('<li id="msg-' + item.id + '">' +
+    '<img class="profile_image" src="' + item.user.profile_image_url +
+      '" alt="' + item.user.name + '" />' +
+    '<span class="time" title="' + item.created_at + '">' +
+      '<a class="visit_status" href="http://twitter.com/' +
+        item.user.screen_name + '/status/' + item.id + '">' +
+        relative_time(item.created_at) +
+      '</a>' +
+    '</span>' +
     ' <a class="user" title="' + item.user.name + '" href="http://twitter.com/' +
-      item.user.screen_name + '">' + item.user.screen_name + '</a>' + 
-    ' <a class="retweet" title="retweet this update"' + 
-      ' href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' + 
-      item.text + '\')">&#x267A;</a>' + 
-    ' <a class="favorite" title="favorite this update"' + 
-      ' href="javascript:toggleFavorite(' + item.id + ')">&#10029;</a>' + 
+      item.user.screen_name + '">' + item.user.screen_name + '</a>' +
+    ' <a class="retweet" title="retweet this update"' +
+      ' href="javascript:reTweet(\'' + item.user.screen_name + '\', \'' +
+      item.text + '\')">&#x267A;</a>' +
+    ' <a class="favorite" title="favorite this update"' +
+      ' href="javascript:toggleFavorite(' + item.id + ')">&#10029;</a>' +
     ' <a class="reply" title="reply to ' + item.user.screen_name +
-      '" href="javascript:replyTo(\'' + item.user.screen_name + '\', ' + 
-      item.id + ')">@</a>' + 
-    '<div class="tweet_text">' + 
+      '" href="javascript:replyTo(\'' + item.user.screen_name + '\', ' +
+      item.id + ')">@</a>' +
+    '<div class="tweet_text">' +
       item.text.replace(
-        /(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g, 
+        /(\w+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+)/g,
         '<a href="$1">$1</a>'
       ).replace(
-        /[\@]+([A-Za-z0-9-_]+)/g, 
+        /[\@]+([A-Za-z0-9-_]+)/g,
         '<a href="http://twitter.com/$1">@$1</a>'
       ).replace(
-        /[&lt;]+[3]/g, 
+        /[&lt;]+[3]/g,
         "<tt class='heart'>&#x2665;</tt>"
-      ) + 
-    '</div>' + 
+      ) +
+    '</div>' +
   '</li>');
 }
 
-function twitterDate_to_jsDate(datestr) { 
+function twitterDate_to_jsDate(datestr) {
   var values = datestr.split(" ");
   time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
   return Date.parse(time_value);
@@ -89,7 +89,7 @@ function twitterDate_to_jsDate(datestr) {
 
 function relative_time(time_value) {
   var now = new Date();
-  var delta = (now.getTime() - twitterDate_to_jsDate(time_value)) / 1000 + 
+  var delta = (now.getTime() - twitterDate_to_jsDate(time_value)) / 1000 +
     (60 * now.getTimezoneOffset());
   if (delta <     1*60) return 'less than a minute ago';
   if (delta <     2*60) return 'a minute ago';
@@ -146,10 +146,10 @@ function setStatus(status_text) {
     status: status_text,
     source: "twoot"
   };
-  if (window.in_reply_to_status_id) { 
+  if (window.in_reply_to_status_id) {
     postVars.in_reply_to_status_id = window.in_reply_to_status_id;
   }
-  $.post("http://twitter.com/statuses/update.json", postVars, function(data) { 
+  $.post("http://twitter.com/statuses/update.json", postVars, function(data) {
     clearStatusField();
   }, "json" );
   window.in_reply_to_status_id = null;
@@ -172,12 +172,12 @@ function clearStatusField() {
   alert("Now refreshing");
   refreshMessages();
   updateStatusCount();
-  $('html').animate({scrollTop:0}, 'fast'); 
+  $('html').animate({scrollTop:0}, 'fast');
   return;
 }
 
 function toggleFavorite(id) {
-  $.getJSON("http://twitter.com/statuses/show/" + id + ".json", 
+  $.getJSON("http://twitter.com/statuses/show/" + id + ".json",
     function(data){
       if (data.favorited) {
         $.post('http://twitter.com/favorites/destroy/' + id + '.json');
@@ -201,5 +201,8 @@ $(document).ready(function(){
   window.setInterval(recalcTime,      1000 * 60);
 
   //Bind r key to request new messages
-  $(document).bind('keydown', {combi:'r', disableInInput: true}, refreshMessages);
+  $(document).bind('keydown', {
+    combi:'r',
+    disableInInput: true
+  }, refreshMessages);
 });
