@@ -2,6 +2,10 @@
 * The Twitter request code is based on the jquery tweet extension by http://tweet.seaofclouds.com/
 *
 * */
+
+// Don't want Growl notifications? Change this to 0
+var GROWL = 1;
+
 var LAST_UPDATE;
 
 //Reverse collection
@@ -35,13 +39,14 @@ jQuery.fn.reverse = function() {
                         $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
                     }
 
-                    // Don't want Growl notifications? Comment out the following method call
+                  if (GROWL) { 
                     fluid.showGrowlNotification({
                         title: item.user.name + " @" + item.user.screen_name,
                         description: item.text,
                         priority: 2,
                         icon: item.user.profile_image_url
                     });
+                  };
 
                 }
             });
