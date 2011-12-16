@@ -14,7 +14,7 @@ DONE
 + Growl notification patch by Carl Leiby added.
 + Fixed - Multiple usernames in tweet not linked.
 + Added profile image example in hud-black-avatars style.
-+ Aditional style matching Fluid's HUD-black. 
++ Aditional style matching Fluid's HUD-black.
 + Add Twoot to Twitter client registry (should display "posted via Twoot").
 + Prevent flickring on reload.
 + Recalculate timestamps each minute.

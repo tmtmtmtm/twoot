@@ -31,7 +31,7 @@ jQuery.fn.reverse = function() {
             if (item.favorited) {
               $('#msg-' + item.id + ' a.favorite').css('color', '#FF0');
             }
-  
+
             if (item.id > LATEST_SEEN) LATEST_SEEN = item.id;
 
             if (growled++ < MAX_GROWLS) {
