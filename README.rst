@@ -1,5 +1,5 @@
 
-Twoot is a customizable minimal twitter client for WebKit-based SSBs. It is based on jQuery_, Fluid_ and some basic HTML and CSS. The idea is to provide a native-looking application that is easy to customize to your specific needs. 
+Twoot is a customizable minimal twitter client for WebKit-based SSBs. It is based on jQuery_, Fluid_ and some basic HTML and CSS. The idea is to provide a native-looking application that is easy to customize to your specific needs.
 
 .. _jQuery: http://jquery.com/
 .. _Fluid: http://fluidapp.com/
